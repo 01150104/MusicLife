@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { ERAS } from "./HistoryScreen";
+import { COMPOSERS } from "./ComposersScreen";
+import { ETIQUETTE_ITEMS } from "./Etiquette";
 
 const style = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+KR:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap');
@@ -372,10 +375,11 @@ const style = `
 `;
 
 const PROGRESS_DATA = [
-  { label: "역사", done: 3, total: 8 },
-  { label: "작곡가", done: 5, total: 12 },
-  { label: "에티켓", done: 7, total: 10 },
+  { label: "역사", done: 0, total: ERAS.length },
+  { label: "작곡가", done: 0, total: COMPOSERS.length },
+  { label: "에티켓", done: 0, total: ETIQUETTE_ITEMS.length },
 ];
+
 
 const CARDS = [
   {
@@ -435,7 +439,7 @@ export default function HomeScreen({ onNavigate }) {
         <p className="hero-ornament">♩ Music Life ♩</p>
         <h1 className="hero-title">클래식 음악 여정을<br />시작하세요</h1>
         <p className="hero-subtitle">자신만의 속도로 클래식 음악의 아름다움을 발견하세요</p>
-        <button className="btn-primary" onClick={() => navigate("quiz")}>
+        <button className="btn-primary" onClick={() => navigate("composers")}>
           학습 시작
         </button>
 
