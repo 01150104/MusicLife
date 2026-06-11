@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {ERAS} from "./HistoryScreen";
+import { ERAS } from "./HistoryScreen";
 import { COMPOSERS } from "./ComposersScreen";
 import { ETIQUETTE_ITEMS } from "./Etiquette";
 import { composerImages } from "../data/composerImages";
@@ -17,14 +17,16 @@ const ERA_PERIODS = {
 };
 
 const ERA_BG = {
-  baroque:   "linear-gradient(160deg, #3D2B1F 0%, #7A5C2E 55%, #C4A040 100%)",
+  baroque: "linear-gradient(160deg, #3D2B1F 0%, #7A5C2E 55%, #C4A040 100%)",
   classical: "linear-gradient(160deg, #1C3A4E 0%, #2A5840 60%, #4A9070 100%)",
-  romantic:  "linear-gradient(160deg, #2E1535 0%, #6B2D5E 65%, #A05A82 100%)",
-  modern:    "linear-gradient(160deg, #151E30 0%, #1E3A5F 65%, #2D6090 100%)",
+  romantic: "linear-gradient(160deg, #2E1535 0%, #6B2D5E 65%, #A05A82 100%)",
+  modern: "linear-gradient(160deg, #151E30 0%, #1E3A5F 65%, #2D6090 100%)",
 };
 const ERA_LETTER_COLOR = {
   baroque: "#F0E4C4", classical: "#C8EAD8", romantic: "#F4D0E8", modern: "#C8D8F0",
 };
+
+
 
 const PROGRESS_DATA = [
   { label: "역사", done: 0, total: ERAS.length },
@@ -110,11 +112,12 @@ const style = `
 `;
 
 export default function MyPageScreen({ onNavigate }) {
-  const navigate = onNavigate || (() => {});
+  const navigate = onNavigate || (() => { });
   const [filled, setFilled] = useState(false);
   const [favEras, setFavEras] = useState([]);
   const [favComposers, setFavComposers] = useState([]);
   const [favPeople, setFavPeople] = useState([]);
+  const [favEtiqette, setFavEtiquette] = useState([]);
 
   useEffect(() => {
     const t = setTimeout(() => setFilled(true), 300);
@@ -122,11 +125,12 @@ export default function MyPageScreen({ onNavigate }) {
       setFavEras(JSON.parse(localStorage.getItem("fav_eras") || "[]"));
       setFavComposers(JSON.parse(localStorage.getItem("fav_composers") || "[]"));
       setFavPeople(JSON.parse(localStorage.getItem("fav_people") || "[]"));
-    } catch {}
+      setFavEtiquette(JSON.parse(localStorage.getItem("fav_etiquette") || "[]"));
+    } catch { }
     return () => clearTimeout(t);
   }, []);
 
-  const totalFav = favEras.length + favComposers.length + favPeople.length;
+  const totalFav = favEras.length + favComposers.length + favPeople.length + favEtiqette.length;
 
   const removeEra = (id, e) => {
     e.stopPropagation();
@@ -146,6 +150,13 @@ export default function MyPageScreen({ onNavigate }) {
     setFavPeople(next);
     localStorage.setItem("fav_people", JSON.stringify(next));
   };
+  //삭제하고 로컬스토리지에 저장
+  const removeEtiquette = (id, e) => {
+    e.stopPropagation();
+    const next = favEtiqette.filter(x => x !== id);
+    setFavEtiquette(next);
+    localStorage.setItem("fav_etiquette", JSON.stringify(next));
+  }
 
   const goToComposer = (id) => {
     const composer = COMPOSERS.find(c => c.id === id);
@@ -156,6 +167,7 @@ export default function MyPageScreen({ onNavigate }) {
     const person = PEOPLE.find(p => p.id === id);
     if (person) navigate("people-detail", person);
   };
+  //에티켓은 할필요x
 
   return (
     <>
@@ -278,9 +290,9 @@ export default function MyPageScreen({ onNavigate }) {
               if (!person) return null;
               const img = peopleImages[id];
               const CAT_BG = {
-                player:    "linear-gradient(160deg, #1A2A4A 0%, #2E4A7A 60%, #4A6A9A 100%)",
+                player: "linear-gradient(160deg, #1A2A4A 0%, #2E4A7A 60%, #4A6A9A 100%)",
                 conductor: "linear-gradient(160deg, #3A1A0A 0%, #6A3A1A 60%, #9A5A2A 100%)",
-                korea:     "linear-gradient(160deg, #0A2A1A 0%, #1A4A2A 60%, #2A6A3A 100%)",
+                korea: "linear-gradient(160deg, #0A2A1A 0%, #1A4A2A 60%, #2A6A3A 100%)",
               };
               const CAT_LETTER = { player: "#C8D8F0", conductor: "#F0D8C0", korea: "#C0F0D0" };
               const bg = CAT_BG[person.cat] || CAT_BG.player;
@@ -312,21 +324,30 @@ export default function MyPageScreen({ onNavigate }) {
             <div className="empty-hint">역대 인물 페이지에서 북마크를 눌러 추가해보세요</div>
           </div>
         )}
-      </div>
-{/* 
-      <div className="section-title">즐겨찾기한 에티켓</div>
-        {favEras.length > 0 ? (
+
+        <div className="section-title">즐겨찾기한 에티켓</div>
+        {favEtiqette.length > 0 ? (
           <div className="fav-grid">
-            {favEras.map(id => (
-              <div key={id} className="era-fav-card" onClick={() => navigate("history")}>
-                <div className="era-icon">♩</div>
-                <div>
-                  <div className="fav-name">{ERA_LABELS[id] || id}</div>
-                  <div className="fav-sub">{ERA_PERIODS[id] || ""}</div>
+            {favEtiqette.map(id => {
+              const etiquette = ETIQUETTE_ITEMS.find(e => e.id === id);
+              if (!etiquette) return null;
+              return (
+                <div key={id} className="fav-card" onClick={() => navigate("etiquette")}>
+                  <div className="fav-thumb" style={{ background: "var(--tag-bg)" }}>
+                    <div className="fav-thumb-fallback">
+                      {etiquette.emoji}
+                    </div>
+                  </div>
+
+                  <div className="fav-info">
+                    <div className="fav-name">{etiquette.title}</div>
+                    <div className="fav-sub">{etiquette.subtitle}</div>
+                  </div>
+
+                  <button className="fav-remove" onClick={e => removeEtiquette(id, e)}>×</button>
                 </div>
-                <button className="fav-remove" onClick={e => removeEra(id, e)}>×</button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="empty-box">
@@ -334,7 +355,9 @@ export default function MyPageScreen({ onNavigate }) {
             <div className="empty-text">즐겨찾기한 에티켓이 없습니다</div>
             <div className="empty-hint">에티켓 페이지에서 ♡ 버튼을 눌러 추가해보세요</div>
           </div>
-        )} */}
+        )}
+        {/* 섹션끝 */}
+      </div>
 
       <footer>
         <div className="footer-logo">Music Life</div>
