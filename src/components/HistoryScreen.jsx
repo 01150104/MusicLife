@@ -9,7 +9,7 @@ import {
   MODERN_CONTENT,
 } from "../data/eraContent";
 
-const ERAS = [
+export const ERAS = [
   {
     id: "medieval",
     name: "중세",

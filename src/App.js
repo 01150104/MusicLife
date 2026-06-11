@@ -6,6 +6,7 @@ import ComposerDetailScreen from './components/ComposerDetailScreen';
 import PeopleScreen from './components/PeopleScreen';
 import PeopleDetailScreen from './components/PeopleDetailScreen';
 import MyPageScreen from './components/MyPageScreen';
+import EtiquetteScreen from './components/Etiquette';
 
 function App() {
   const [page, setPage] = useState('home');
@@ -27,6 +28,7 @@ function App() {
     people: <PeopleScreen onNavigate={navigate} />,
     'people-detail': <PeopleDetailScreen person={selectedPerson} onNavigate={navigate} />,
     mypage: <MyPageScreen onNavigate={navigate} />,
+    etiquette: <EtiquetteScreen onNavigate={navigate} />,
   };
 
   return screens[page] || screens.home;

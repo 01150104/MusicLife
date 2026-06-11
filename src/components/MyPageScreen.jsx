@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import {ERAS} from "./HistoryScreen";
 import { COMPOSERS } from "./ComposersScreen";
+import { ETIQUETTE_ITEMS } from "./Etiquette";
 import { composerImages } from "../data/composerImages";
 import { PEOPLE } from "./PeopleScreen";
 import { peopleImages } from "../data/peopleImages";
@@ -25,9 +27,9 @@ const ERA_LETTER_COLOR = {
 };
 
 const PROGRESS_DATA = [
-  { label: "역사", done: 3, total: 8 },
-  { label: "작곡가", done: 5, total: 12 },
-  { label: "에티켓", done: 7, total: 10 },
+  { label: "역사", done: 0, total: ERAS.length },
+  { label: "작곡가", done: 0, total: COMPOSERS.length },
+  { label: "에티켓", done: 0, total: ETIQUETTE_ITEMS.length },
 ];
 
 const style = `
@@ -311,6 +313,28 @@ export default function MyPageScreen({ onNavigate }) {
           </div>
         )}
       </div>
+{/* 
+      <div className="section-title">즐겨찾기한 에티켓</div>
+        {favEras.length > 0 ? (
+          <div className="fav-grid">
+            {favEras.map(id => (
+              <div key={id} className="era-fav-card" onClick={() => navigate("history")}>
+                <div className="era-icon">♩</div>
+                <div>
+                  <div className="fav-name">{ERA_LABELS[id] || id}</div>
+                  <div className="fav-sub">{ERA_PERIODS[id] || ""}</div>
+                </div>
+                <button className="fav-remove" onClick={e => removeEra(id, e)}>×</button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-box">
+            <div className="empty-icon">♡</div>
+            <div className="empty-text">즐겨찾기한 에티켓이 없습니다</div>
+            <div className="empty-hint">에티켓 페이지에서 ♡ 버튼을 눌러 추가해보세요</div>
+          </div>
+        )} */}
 
       <footer>
         <div className="footer-logo">Music Life</div>
