@@ -387,10 +387,10 @@ const style = `
 
   @media (max-width: 768px) {
     .nav { padding: 0 20px; }
-    .nav-menu { gap: 20px; }
+    .nav-menu { display: none; }
     .cards-grid { grid-template-columns: 1fr; }
     .quiz-grid { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 12px; text-align: center; }
+    footer { flex-direction: column; gap: 12px; text-align: center; margin-bottom: 62px; }
   }
 `;
 

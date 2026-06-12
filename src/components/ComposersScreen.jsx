@@ -180,11 +180,12 @@ const style = `
 
   @media (max-width: 1024px) { .c-grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 768px) {
-    .nav { padding: 0 20px; } .nav-menu { gap: 18px; }
-    .c-page { padding: 32px 16px 60px; }
+    .nav { padding: 0 20px; } .nav-menu { display: none; }
+    .c-page { padding: 32px 16px 80px; }
     .c-title { font-size: 28px; }
     .c-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+    .c-filter { flex-wrap: wrap; gap: 8px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; margin-bottom: 62px; }
   }
   @media (max-width: 480px) { .c-grid { grid-template-columns: 1fr; } }
 `;

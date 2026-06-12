@@ -160,11 +160,11 @@ const style = `
   .footer-text { font-size: 12px; color: var(--brown-light); font-weight: 300; letter-spacing: 0.03em; }
 
   @media (max-width: 768px) {
-    .nav { padding: 0 20px; } .nav-menu { gap: 18px; }
+    .nav { padding: 0 20px; } .nav-menu { display: none; }
     .timeline::before { left: calc(20px + 19px); }
     .era-item { padding-left: 52px; }
     .feat-list { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; margin-bottom: 62px; }
   }
 `;
 

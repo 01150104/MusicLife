@@ -119,13 +119,13 @@ const style = `
   .footer-text { font-size: 12px; color: var(--brown-light); font-weight: 300; letter-spacing: 0.03em; }
 
   @media (max-width: 768px) {
-    .nav { padding: 0 20px; } .nav-menu { gap: 14px; }
-    .qz-page { padding: 28px 16px 60px; }
+    .nav { padding: 0 20px; } .nav-menu { display: none; }
+    .qz-page { padding: 28px 16px 80px; }
     .qz-card { padding: 20px 18px; }
     .qz-result { padding: 32px 20px 28px; }
     .qz-result-btns { flex-direction: column; }
     .qz-btn-retry, .qz-btn-home { width: 100%; }
-    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; margin-bottom: 62px; }
   }
 `;
 

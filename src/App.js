@@ -10,6 +10,7 @@ import EtiquetteScreen from './components/Etiquette';
 import QuizScreen from './components/QuizScreen';
 import HistoryQuizScreen from './components/HistoryQuizScreen';
 import EtiquetteQuizScreen from './components/EtiquetteQuizScreen';
+import BottomNav from './components/BottomNav';
 
 function App() {
   const [page, setPage] = useState('home');
@@ -37,7 +38,12 @@ function App() {
     'etiquette-quiz': <EtiquetteQuizScreen onNavigate={navigate} />,
   };
 
-  return screens[page] || screens.home;
+  return (
+    <>
+      {screens[page] || screens.home}
+      <BottomNav onNavigate={navigate} activePage={page} />
+    </>
+  );
 }
 
 export default App;
