@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { composerImages } from "../data/composerImages";
 
 const ERA_PORTRAIT = {
@@ -121,6 +121,16 @@ export default function ComposerDetailScreen({ composer, onNavigate }) {
       return JSON.parse(localStorage.getItem("fav_composers") || "[]").includes(composer?.id);
     } catch { return false; }
   });
+
+  useEffect(() => {
+    if (!composer?.id) return;
+    try {
+      const visited = JSON.parse(localStorage.getItem("visited_composers") || "[]");
+      if (!visited.includes(composer.id)) {
+        localStorage.setItem("visited_composers", JSON.stringify([...visited, composer.id]));
+      }
+    } catch {}
+  }, [composer?.id]);
 
   if (!composer) {
     navigate("composers");

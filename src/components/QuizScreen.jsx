@@ -145,45 +145,43 @@ export default function QuizScreen({ onNavigate }) {
     return shuffle(pool).slice(0, QUIZ_COUNT);
   }, []);
 
-  const [current, setCurrent]   = useState(0);        // 현재 문제 인덱스
-  const [selected, setSelected] = useState(null);     // 선택한 보기 인덱스
-  const [answers, setAnswers]   = useState([]);        // { q, chosen } 기록
-  const [done, setDone]         = useState(false);     // 퀴즈 완료 여부
+  const [current, setCurrent]       = useState(0);
+  const [selected, setSelected]     = useState(null);
+  const [answers, setAnswers]       = useState([]);
+  const [finalAnswers, setFinalAnswers] = useState(null); // null이면 진행 중, 배열이면 완료
 
-  const q = questions[current];
+  const done  = finalAnswers !== null;
+  const q     = questions[current];
   const total = questions.length;
-  const progress = ((current + (selected !== null ? 1 : 0)) / total) * 100;
 
-  // 선택
   const handleSelect = (idx) => {
-    if (selected !== null) return; // 이미 선택함
+    if (selected !== null) return;
     setSelected(idx);
   };
 
-  // 다음 문제 / 완료
   const handleNext = () => {
     if (selected === null) return;
     const newAnswers = [...answers, { question: q.question, chosen: selected, answer: q.answer }];
-    setAnswers(newAnswers);
 
     if (current + 1 >= total) {
-      setDone(true);
+      // 단일 상태 업데이트로 원자적으로 저장 → 결과 화면이 항상 완전한 답 목록을 참조
+      setFinalAnswers(newAnswers);
     } else {
+      setAnswers(newAnswers);
       setCurrent(c => c + 1);
       setSelected(null);
     }
   };
 
-  // 다시 풀기
   const handleRetry = () => {
     setCurrent(0);
     setSelected(null);
     setAnswers([]);
-    setDone(false);
+    setFinalAnswers(null);
   };
 
-  const correctCount = answers.filter(a => a.chosen === a.answer).length;
-  const wrongAnswers = answers.filter(a => a.chosen !== a.answer);
+  const correctCount = (finalAnswers || []).filter(a => a.chosen === a.answer).length;
+  const wrongAnswers = (finalAnswers || []).filter(a => a.chosen !== a.answer);
   const isGood = correctCount >= Math.ceil(total / 2);
 
   return (
@@ -191,7 +189,7 @@ export default function QuizScreen({ onNavigate }) {
       <style>{style}</style>
 
       <nav className="nav">
-        <div className="nav-logo" onClick={() => navigate("home")}>My Classic</div>
+        <div className="nav-logo" onClick={() => navigate("home")}>Music Life</div>
         <ul className="nav-menu">
           {NAV_ITEMS.map(({ label, page }) => (
             <li key={page} onClick={() => navigate(page)}>{label}</li>
@@ -291,7 +289,7 @@ export default function QuizScreen({ onNavigate }) {
       </div>
 
       <footer>
-        <div className="footer-logo">My Classic</div>
+        <div className="footer-logo">Music Life</div>
         <div className="footer-text">클래식 음악의 아름다움을 함께 탐구합니다</div>
       </footer>
     </>

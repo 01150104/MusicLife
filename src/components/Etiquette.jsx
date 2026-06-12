@@ -156,7 +156,19 @@ export default function EtiquetteScreen({ onNavigate }) {
     catch { return []; }
   });
 
-  const toggleOpen = (id) => setOpenId(prev => prev === id ? null : id);
+  const toggleOpen = (id) => {
+    setOpenId(prev => {
+      if (prev !== id) {
+        try {
+          const visited = JSON.parse(localStorage.getItem("visited_etiquette") || "[]");
+          if (!visited.includes(id)) {
+            localStorage.setItem("visited_etiquette", JSON.stringify([...visited, id]));
+          }
+        } catch {}
+      }
+      return prev === id ? null : id;
+    });
+  };
 
   const toggleBookmark = (id, e) => {
     e.stopPropagation();
@@ -180,7 +192,7 @@ export default function EtiquetteScreen({ onNavigate }) {
       <style>{style}</style>
 
       <nav className="nav">
-        <div className="nav-logo" onClick={() => navigate("home")}>My Classic</div>
+        <div className="nav-logo" onClick={() => navigate("home")}>Music Life</div>
         <ul className="nav-menu">
           {NAV_ITEMS.map(({ label, page }) => (
             <li
@@ -243,7 +255,7 @@ export default function EtiquetteScreen({ onNavigate }) {
       </div>
 
       <footer>
-        <div className="footer-logo">My Classic</div>
+        <div className="footer-logo">Music Life</div>
         <div className="footer-text">클래식 음악의 아름다움을 함께 탐구합니다</div>
       </footer>
     </>

@@ -28,11 +28,6 @@ const ERA_LETTER_COLOR = {
 
 
 
-const PROGRESS_DATA = [
-  { label: "역사", done: 0, total: ERAS.length },
-  { label: "작곡가", done: 0, total: COMPOSERS.length },
-  { label: "에티켓", done: 0, total: ETIQUETTE_ITEMS.length },
-];
 
 const style = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+KR:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap');
@@ -118,6 +113,9 @@ export default function MyPageScreen({ onNavigate }) {
   const [favComposers, setFavComposers] = useState([]);
   const [favPeople, setFavPeople] = useState([]);
   const [favEtiqette, setFavEtiquette] = useState([]);
+  const [visitedEras, setVisitedEras] = useState([]);
+  const [visitedComposers, setVisitedComposers] = useState([]);
+  const [visitedEtiquette, setVisitedEtiquette] = useState([]);
 
   useEffect(() => {
     const t = setTimeout(() => setFilled(true), 300);
@@ -126,9 +124,19 @@ export default function MyPageScreen({ onNavigate }) {
       setFavComposers(JSON.parse(localStorage.getItem("fav_composers") || "[]"));
       setFavPeople(JSON.parse(localStorage.getItem("fav_people") || "[]"));
       setFavEtiquette(JSON.parse(localStorage.getItem("fav_etiquette") || "[]"));
+      setVisitedEras(JSON.parse(localStorage.getItem("visited_eras") || "[]"));
+      setVisitedComposers(JSON.parse(localStorage.getItem("visited_composers") || "[]"));
+      setVisitedEtiquette(JSON.parse(localStorage.getItem("visited_etiquette") || "[]"));
     } catch { }
     return () => clearTimeout(t);
   }, []);
+
+  const progressData = [
+    { label: "역사", done: visitedEras.length, total: ERAS.length },
+    { label: "작곡가", done: visitedComposers.length, total: COMPOSERS.length },
+    { label: "에티켓", done: visitedEtiquette.length, total: ETIQUETTE_ITEMS.length },
+  ];
+  const totalLearned = visitedEras.length + visitedComposers.length + visitedEtiquette.length;
 
   const totalFav = favEras.length + favComposers.length + favPeople.length + favEtiqette.length;
 
@@ -197,11 +205,11 @@ export default function MyPageScreen({ onNavigate }) {
             <div className="stat-label">즐겨찾기</div>
           </div>
           <div className="stat-item">
-            <div className="stat-num">15</div>
+            <div className="stat-num">{totalLearned}</div>
             <div className="stat-label">학습 완료</div>
           </div>
           <div className="stat-item">
-            <div className="stat-num">4</div>
+            <div className="stat-num">{visitedEras.length}</div>
             <div className="stat-label">탐험 시대</div>
           </div>
         </div>
@@ -210,7 +218,7 @@ export default function MyPageScreen({ onNavigate }) {
       <div className="section">
         <div className="section-title">학습 진도</div>
         <div className="progress-box">
-          {PROGRESS_DATA.map(({ label, done, total }) => (
+          {progressData.map(({ label, done, total }) => (
             <div className="progress-item" key={label}>
               <div className="progress-label">
                 <span>{label}</span>

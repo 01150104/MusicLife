@@ -192,12 +192,24 @@ export default function HistoryScreen({ onNavigate }) {
     setExpandedContent(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const openEraCard = (id) => {
+    if (openEra !== id) {
+      try {
+        const visited = JSON.parse(localStorage.getItem("visited_eras") || "[]");
+        if (!visited.includes(id)) {
+          localStorage.setItem("visited_eras", JSON.stringify([...visited, id]));
+        }
+      } catch {}
+    }
+    setOpenEra(prev => prev === id ? null : id);
+  };
+
   return (
     <>
       <style>{style}</style>
 
       <nav className="nav">
-        <div className="nav-logo" onClick={() => navigate("home")}>My Classic</div>
+        <div className="nav-logo" onClick={() => navigate("home")}>Music Life</div>
         <ul className="nav-menu">
           {["역사", "작곡가", "역대 인물", "에티켓", "내 페이지"].map((item, i) => {
             const pages = ["history", "composers", "people", "etiquette", "mypage"];
@@ -225,7 +237,7 @@ export default function HistoryScreen({ onNavigate }) {
             <div key={era.id} className="era-item">
               <div className={`era-dot${isOpen ? " active" : ""}`} />
               <div className={`era-card${isOpen ? " open" : ""}`}>
-                <div className="era-header" onClick={() => setOpenEra(isOpen ? null : era.id)}>
+                <div className="era-header" onClick={() => openEraCard(era.id)}>
                   <div>
                     <div className="era-period">{era.period}</div>
                     <div className="era-name">{era.name}</div>
@@ -283,7 +295,7 @@ export default function HistoryScreen({ onNavigate }) {
       </div>
 
       <footer>
-        <div className="footer-logo">My Classic</div>
+        <div className="footer-logo">Music Life</div>
         <div className="footer-text">클래식 음악의 아름다움을 함께 탐구합니다</div>
       </footer>
     </>
