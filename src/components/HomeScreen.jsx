@@ -394,11 +394,6 @@ const style = `
   }
 `;
 
-const PROGRESS_DATA = [
-  { label: "역사", done: 0, total: ERAS.length },
-  { label: "작곡가", done: 0, total: COMPOSERS.length },
-  { label: "에티켓", done: 0, total: ETIQUETTE_ITEMS.length },
-];
 
 
 const CARDS = [
@@ -427,12 +422,27 @@ const CARDS = [
 
 export default function HomeScreen({ onNavigate }) {
   const [filled, setFilled] = useState(false);
-  const navigate = onNavigate || (() => {});
+  const navigate = onNavigate || (() => { });
+
+  const [quizComposerCount, setQuizComposerCount] = useState(0);
+  const [quizHistoryCount, setQuizHistoryCount] = useState(0);
+  const [quizEtiquetteCount, setQuizEtiquetteCount] = useState(0);
 
   useEffect(() => {
     const t = setTimeout(() => setFilled(true), 600);
+    try{
+      setQuizComposerCount(parseInt(localStorage.getItem("quiz_composer_count") || "0", 10));
+      setQuizHistoryCount(parseInt(localStorage.getItem("quiz_history_count") || "0", 10));
+      setQuizEtiquetteCount(parseInt(localStorage.getItem("quiz_etiquette_count") || "0", 10));
+    }catch{}
     return () => clearTimeout(t);
   }, []);
+
+    const progressData = [
+    { label: "역사", done: quizHistoryCount, total: ERAS.length },
+    { label: "작곡가", done: quizComposerCount, total: COMPOSERS.length },
+    { label: "에티켓", done: quizEtiquetteCount, total: ETIQUETTE_ITEMS.length },
+  ];
 
   return (
     <>
@@ -498,17 +508,14 @@ export default function HomeScreen({ onNavigate }) {
             </span>
             <span className="progress-badge">↗ 진행 중</span>
           </div>
-          {PROGRESS_DATA.map(({ label, done, total }) => (
+          {progressData.map(({ label, done, total }) => (
             <div className="progress-item" key={label}>
               <div className="progress-label">
                 <span>{label}</span>
                 <span className="progress-count">{done}/{total} 완료</span>
               </div>
               <div className="progress-track">
-                <div
-                  className="progress-fill"
-                  style={{ width: filled ? `${(done / total) * 100}%` : "0%" }}
-                />
+                <div className="progress-fill" style={{ width: filled ? `${(done / total) * 100}%` : "0%" }} />
               </div>
             </div>
           ))}
