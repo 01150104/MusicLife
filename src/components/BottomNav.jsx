@@ -58,13 +58,14 @@ const ITEMS = [
   { page: 'home',      icon: '🏠', label: '홈' },
   { page: 'history',   icon: '📖', label: '역사' },
   { page: 'composers', icon: '🎵', label: '작곡가' },
+  { page: 'people', icon: '🎼', label: '역대 인물' },
   { page: 'etiquette', icon: '✨', label: '에티켓' },
   { page: 'mypage',    icon: '👤', label: '내 페이지' },
 ];
 
 export default function BottomNav({ onNavigate, activePage }) {
   const activeRoot = activePage === 'composer-detail' ? 'composers'
-    : activePage === 'people-detail' ? 'composers'
+    : activePage === 'people-detail' ? 'people'
     : activePage === 'quiz' ? 'composers'
     : activePage === 'history-quiz' ? 'history'
     : activePage === 'etiquette-quiz' ? 'etiquette'
