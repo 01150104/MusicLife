@@ -258,7 +258,7 @@ export default function MyPageScreen({ onNavigate }) {
         <div className="section-title">퀴즈 현황</div>
         <div className="quiz-score-grid">
           {quizScoreData.map(({ icon, label, count }) => (
-            <div className="quiz-score-card" key={label} onClick={() => navigate("quiz")}>
+            <div className="quiz-score-card" key={label}>
               <div className="quiz-score-icon">{icon}</div>
               <div className="quiz-score-label">{label}</div>
               <div className="quiz-score-num">{count}</div>
